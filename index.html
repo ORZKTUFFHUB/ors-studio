@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>OR's Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --black: #000000;
+  --white: #ffffff;
+  --off: #f4f4f2;
+  --light: #e8e8e6;
+  --mid: #b0b0ae;
+  --dim: #707070;
+  --border: #d0d0ce;
+}
+
+html { font-size: 16px; }
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(10px);
+}
+
+.logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  color: var(--black);
+}
+.logo-dot { color: var(--dim); }
+
+.header-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--dim);
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  padding: 5px 10px;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 56px 24px 40px;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeIn 0.6s ease 0.1s forwards;
+}
+
+.hero-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.hero-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(38px, 11vw, 72px);
+  line-height: 1;
+  letter-spacing: -1px;
+  margin-bottom: 18px;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--dim);
+}
+
+.hero-desc {
+  font-size: 15px;
+  color: var(--dim);
+  line-height: 1.65;
+  max-width: 340px;
+  font-weight: 300;
+}
+
+/* ── MAIN SECTION ── */
+.section {
+  padding: 36px 24px;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeIn 0.6s ease 0.25s forwards;
+}
+
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── INPUT ── */
+.input-wrap {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.url-input {
+  width: 100%;
+  padding: 16px 18px;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  color: var(--black);
+  background: var(--off);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+  caret-color: var(--black);
+  appearance: none;
+}
+.url-input::placeholder { color: var(--mid); }
+.url-input:focus {
+  border-color: var(--black);
+  background: var(--white);
+}
+
+/* ── QUALITY TOGGLE ── */
+.quality-row {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border: 1px solid var(--border);
+}
+
+.q-btn {
+  flex: 1;
+  padding: 13px 10px;
+  background: transparent;
+  border: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--mid);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+.q-btn + .q-btn { border-left: 1px solid var(--border); }
+.q-btn.active {
+  background: var(--black);
+  color: var(--white);
+}
+.q-btn:hover:not(.active) { background: var(--off); color: var(--black); }
+
+.q-sub {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 1px;
+  margin-top: 2px;
+  opacity: 0.6;
+}
+
+/* ── SEARCH BTN ── */
+.btn-search {
+  width: 100%;
+  padding: 17px;
+  background: var(--black);
+  color: var(--white);
+  border: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-search:hover { opacity: 0.85; }
+.btn-search:active { opacity: 0.7; }
+.btn-search:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── STATUS LINE ── */
+.status {
+  display: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--dim);
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
+  letter-spacing: 0.5px;
+}
+.status.show { display: flex; align-items: center; gap: 8px; }
+.status.err { color: #c00; }
+.status.ok { color: #070; }
+
+.spinner {
+  width: 12px; height: 12px;
+  border: 1.5px solid var(--border);
+  border-top-color: var(--black);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── PROGRESS ── */
+.progress-wrap {
+  display: none;
+  margin-top: 16px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.progress-wrap.show { display: block; }
+.progress-track {
+  height: 2px;
+  background: var(--light);
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  position: absolute; top: 0; left: 0; bottom: 0;
+  background: var(--black);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.progress-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
+  letter-spacing: 1px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ── VIDEO RESULT ── */
+.result {
+  display: none;
+  padding: 36px 24px;
+  border-bottom: 1px solid var(--border);
+  animation: fadeIn 0.4s ease both;
+}
+.result.show { display: block; }
+
+.thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background: var(--off);
+}
+.thumb-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(100%);
+  transition: filter 0.3s;
+}
+.thumb-wrap:hover img { filter: grayscale(60%); }
+
+.thumb-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px; height: 48px;
+  background: var(--white);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+.play-btn::after {
+  content: '';
+  border: 0 solid transparent;
+  border-left: 16px solid var(--black);
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  margin-left: 5px;
+}
+
+.video-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  margin-bottom: 8px;
+}
+.video-author {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--dim);
+  letter-spacing: 1px;
+  margin-bottom: 28px;
+}
+
+/* ── DOWNLOAD OPTIONS ── */
+.dl-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--dim);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.dl-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.dl-list { display: flex; flex-direction: column; }
+
+.dl-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: padding-left 0.2s;
+}
+.dl-item:hover { padding-left: 6px; }
+.dl-item:last-child { border-bottom: none; }
+
+.dl-quality {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+  letter-spacing: -0.5px;
+}
+.dl-meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--dim);
+  margin-top: 2px;
+  letter-spacing: 0.5px;
+}
+.dl-tags { display: flex; align-items: center; gap: 8px; }
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  color: var(--dim);
+}
+.tag.filled {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--black);
+}
+.dl-arrow {
+  width: 32px; height: 32px;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.dl-item:hover .dl-arrow {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+/* ── HOW TO ── */
+.howto {
+  padding: 36px 24px;
+  border-bottom: 1px solid var(--border);
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeIn 0.6s ease 0.4s forwards;
+}
+
+.steps { margin-top: 4px; }
+.step {
+  display: flex;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+.step:last-child { border-bottom: none; }
+.step-n {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--mid);
+  flex-shrink: 0;
+  padding-top: 3px;
+  letter-spacing: 1px;
+}
+.step-body { flex: 1; }
+.step-title {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.step-desc {
+  font-size: 13px;
+  color: var(--dim);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+/* ── NOTICE ── */
+.notice {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mid);
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 36px 24px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.footer-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 32px;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.footer-r {
+  text-align: right;
+}
+.footer-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--mid);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.footer-year {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--border);
+  letter-spacing: 1px;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(60px);
+  background: var(--black);
+  color: var(--white);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  padding: 12px 20px;
+  z-index: 200;
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── ANIMATION ── */
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MOBILE TWEAKS ── */
+@media (max-width: 400px) {
+  .hero-title { font-size: 38px; }
+  .footer { flex-direction: column; gap: 20px; }
+  .footer-r { text-align: left; }
+}
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">OR<span class="logo-dot">'s</span></div>
+  <div class="header-tag">Download Studio</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">// YouTube Downloader</div>
+  <h1 class="hero-title">Download<br><em>Studio.</em></h1>
+  <p class="hero-desc">Baixe vídeos do YouTube em MP4 com qualidade HD 1080p ou 720p. Simples, rápido, direto.</p>
+</div>
+
+<!-- SEARCH SECTION -->
+<div class="section">
+  <div class="section-label">Link do vídeo</div>
+
+  <div class="input-wrap">
+    <input
+      class="url-input"
+      id="urlInput"
+      type="url"
+      inputmode="url"
+      placeholder="https://youtube.com/watch?v=..."
+      autocomplete="off"
+      autocorrect="off"
+      spellcheck="false"
+    >
+  </div>
+
+  <div class="section-label" style="margin-top:20px">Qualidade</div>
+  <div class="quality-row">
+    <button class="q-btn active" data-q="1080" onclick="setQ(this)">
+      1080p<span class="q-sub">Full HD</span>
+    </button>
+    <button class="q-btn" data-q="720" onclick="setQ(this)">
+      720p<span class="q-sub">HD</span>
+    </button>
+  </div>
+
+  <button class="btn-search" id="searchBtn" onclick="analyze()">
+    Analisar vídeo
+  </button>
+
+  <div class="status" id="status"></div>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label">
+      <span id="progressStep">Aguardando...</span>
+      <span id="progressPct">0%</span>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="result" id="result">
+  <div class="thumb-wrap">
+    <img id="thumb" src="" alt="">
+    <div class="thumb-overlay"></div>
+    <div class="play-btn"></div>
+  </div>
+
+  <div class="video-title" id="vTitle"></div>
+  <div class="video-author" id="vAuthor"></div>
+
+  <div class="dl-label">Download</div>
+  <div class="dl-list" id="dlList"></div>
+</div>
+
+<!-- HOW TO -->
+<div class="howto">
+  <div class="section-label">Como usar</div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-n">01</div>
+      <div class="step-body">
+        <div class="step-title">Copie o link</div>
+        <div class="step-desc">Abra o YouTube, entre no vídeo e copie o link da barra de endereço ou pelo botão Compartilhar.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">02</div>
+      <div class="step-body">
+        <div class="step-title">Cole e escolha a qualidade</div>
+        <div class="step-desc">Cole o link no campo acima e selecione 1080p ou 720p conforme preferir.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">03</div>
+      <div class="step-body">
+        <div class="step-title">Clique em Analisar</div>
+        <div class="step-desc">O sistema vai buscar o vídeo e apresentar as opções de download disponíveis.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-n">04</div>
+      <div class="step-body">
+        <div class="step-title">Baixe o arquivo</div>
+        <div class="step-desc">Toque no botão de download e o arquivo MP4 será salvo no seu celular.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NOTICE -->
+<div class="notice">
+  ⓘ  Aviso: Use apenas para vídeos com permissão de download. Respeite os direitos autorais. O download de conteúdo protegido pode ser ilegal em seu país. Este serviço não se responsabiliza pelo uso indevido.
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">OR's</div>
+  <div class="footer-r">
+    <div class="footer-tag">Download Studio</div>
+    <div class="footer-year">© 2025</div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+let quality = '1080';
+
+function setQ(btn) {
+  document.querySelectorAll('.q-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  quality = btn.dataset.q;
+}
+
+// ── Status ─────────────────────────────────────────────────────────────────
+function setStatus(msg, type, spin) {
+  const el = document.getElementById('status');
+  el.className = 'status show' + (type ? ' ' + type : '');
+  el.innerHTML = (spin ? '<div class="spinner"></div>' : '') + `<span>${msg}</span>`;
+}
+function clearStatus() {
+  document.getElementById('status').className = 'status';
+}
+
+// ── Progress ───────────────────────────────────────────────────────────────
+const steps = [
+  'Verificando link...',
+  'Buscando informações...',
+  'Processando qualidade...',
+  'Gerando download...',
+];
+let pTimer = null;
+let pIndex = 0;
+
+function startProgress() {
+  document.getElementById('progressWrap').className = 'progress-wrap show';
+  pIndex = 0;
+  updateProgress();
+  pTimer = setInterval(() => {
+    pIndex++;
+    if (pIndex >= steps.length) { clearInterval(pTimer); return; }
+    updateProgress();
+  }, 900);
+}
+function updateProgress() {
+  const pct = Math.round(((pIndex + 1) / steps.length) * 90);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressStep').textContent = steps[pIndex] || '';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+function finishProgress() {
+  clearInterval(pTimer);
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressStep').textContent = 'Concluído';
+  document.getElementById('progressPct').textContent = '100%';
+  setTimeout(() => {
+    document.getElementById('progressWrap').className = 'progress-wrap';
+  }, 800);
+}
+function resetProgress() {
+  clearInterval(pTimer);
+  document.getElementById('progressWrap').className = 'progress-wrap';
+  document.getElementById('progressFill').style.width = '0%';
+}
+
+// ── Toast ──────────────────────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── Analyze ────────────────────────────────────────────────────────────────
+async function analyze() {
+  const url = document.getElementById('urlInput').value.trim();
+  const btn = document.getElementById('searchBtn');
+
+  if (!url) { setStatus('Cole um link do YouTube válido.', 'err'); return; }
+
+  btn.disabled = true;
+  document.getElementById('result').className = 'result';
+  clearStatus();
+  startProgress();
+  setStatus('Analisando...', '', true);
+
+  try {
+    const res = await fetch(`/api/info?url=${encodeURIComponent(url)}`);
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      resetProgress();
+      setStatus(data.error || 'Vídeo não encontrado.', 'err');
+      btn.disabled = false;
+      return;
+    }
+
+    // Now get download link
+    const dlRes = await fetch('/api/download', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, quality }),
+    });
+    const dlData = await dlRes.json();
+
+    finishProgress();
+    clearStatus();
+    renderResult(data, dlData);
+    toast('Vídeo encontrado');
+
+  } catch (e) {
+    resetProgress();
+    setStatus('Erro de conexão. Verifique sua internet.', 'err');
+  }
+
+  btn.disabled = false;
+}
+
+// ── Render Result ──────────────────────────────────────────────────────────
+function renderResult(info, dl) {
+  document.getElementById('thumb').src = info.thumbnailHq || info.thumbnail;
+  document.getElementById('thumb').onerror = function() { this.src = info.thumbnail; };
+  document.getElementById('vTitle').textContent = info.title;
+  document.getElementById('vAuthor').textContent = info.author.toUpperCase();
+
+  const list = document.getElementById('dlList');
+
+  const qualities = [
+    { q: '1080', label: '1080p', meta: 'Full HD · MP4 · ~350MB', main: true },
+    { q: '720', label: '720p', meta: 'HD · MP4 · ~180MB', main: false },
+  ];
+
+  list.innerHTML = qualities.map(opt => {
+    const isRequested = opt.q === quality;
+
+    // Build download URL
+    let href = '#';
+    let onclick = '';
+
+    if (isRequested && dl.downloadUrl) {
+      // Proxy through our server for proper download on mobile
+      const filename = encodeURIComponent(info.title.slice(0, 60) + '_' + opt.q + 'p.mp4');
+      const encodedUrl = encodeURIComponent(dl.downloadUrl);
+      href = `/api/stream?url=${encodedUrl}&filename=${filename}`;
+    } else if (isRequested && dl.fallback) {
+      href = dl.fallbackUrl;
+      onclick = `event.preventDefault(); window.open('${dl.fallbackUrl}', '_blank'); showFallbackNote()`;
+    } else {
+      // For the other quality, re-request
+      onclick = `event.preventDefault(); downloadOther('${info.id}', '${opt.q}', encodeURIComponent('${info.title.slice(0,60).replace(/'/g,"\\'")}'))`;
+    }
+
+    return `
+      <a class="dl-item" href="${href}" ${onclick ? `onclick="${onclick}"` : `download`} ${!onclick && href !== '#' ? 'target="_blank"' : ''}>
+        <div>
+          <div class="dl-quality">${opt.label}</div>
+          <div class="dl-meta">${opt.meta}</div>
+        </div>
+        <div class="dl-tags">
+          ${isRequested ? '<span class="tag filled">MP4</span>' : '<span class="tag">MP4</span>'}
+          <div class="dl-arrow">↓</div>
+        </div>
+      </a>
+    `;
+  }).join('');
+
+  document.getElementById('result').className = 'result show';
+
+  // Scroll to result
+  setTimeout(() => {
+    document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 200);
+}
+
+// ── Download other quality on demand ───────────────────────────────────────
+async function downloadOther(id, q, encodedTitle) {
+  const url = `https://www.youtube.com/watch?v=${id}`;
+  toast('Buscando ' + q + 'p...');
+
+  try {
+    const res = await fetch('/api/download', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, quality: q }),
+    });
+    const data = await res.json();
+
+    if (data.downloadUrl) {
+      const proxyUrl = `/api/stream?url=${encodeURIComponent(data.downloadUrl)}&filename=${encodedTitle}_${q}p.mp4`;
+      const a = document.createElement('a');
+      a.href = proxyUrl;
+      a.download = '';
+      a.target = '_blank';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      toast('Download iniciado!');
+    } else if (data.fallback) {
+      window.open(data.fallbackUrl, '_blank');
+      showFallbackNote();
+    }
+  } catch (e) {
+    toast('Erro. Tente novamente.');
+  }
+}
+
+function showFallbackNote() {
+  setStatus('Abrindo serviço externo. Escolha MP4 na página que abrir.', 'ok');
+}
+
+// ── Enter key ─────────────────────────────────────────────────────────────
+document.getElementById('urlInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') analyze();
+});
+
+// ── Paste detection ───────────────────────────────────────────────────────
+document.getElementById('urlInput').addEventListener('paste', () => {
+  setTimeout(() => {
+    const v = document.getElementById('urlInput').value;
+    if (v.includes('youtube.com') || v.includes('youtu.be')) {
+      setStatus('Link detectado. Pressione Analisar.', 'ok');
+    }
+  }, 50);
+});
+</script>
+</body>
+</html>
