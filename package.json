@@ -1,0 +1,19 @@
+{
+  "name": "ors-studio",
+  "version": "1.0.0",
+  "description": "OR's Download Studio - YouTube downloader",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "build": "node src/install-yt-dlp.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "ytdl-core": "^4.11.5",
+    "node-fetch": "^2.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
